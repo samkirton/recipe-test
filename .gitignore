@@ -1,0 +1,5 @@
+bounty-codegen/target
+.gradle
+.idea
+build
+local.properties

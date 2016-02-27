@@ -1,0 +1,63 @@
+configuration:
+    name: Schibsted
+    package: com.schibsted.recipe
+    version: 1
+
+    android:
+        versioncode: 1
+        minsdkversion: 11
+        targetsdkversion: 23
+        buildtoolsversion: 23.0.1
+
+endpoint:
+    resource:
+    - path: /api/search
+      id: Search
+      method:
+      - name: GET
+        id: search
+        request:
+            query:
+            - name: key
+              type: $string
+            - name: q
+              type: $string
+            - name: sort
+              type: $string
+            - name: page
+              type: $integer
+
+        response:
+            code: 200
+            body:
+                type: ~Recipes
+
+data:
+    bean:
+    - name: Recipes
+      var:
+      - name: count
+        type: $integer
+
+      - name: recipes
+        type: ~Recipe[]
+
+    - name: Recipe
+      var:
+      - name: publisher
+        type: $string
+
+      - name: f2f_url
+        type: $string
+
+      - name: publisher_url
+        type: $string
+
+      - name: title
+        type: $string
+
+      - name: source_url
+        type: $string
+
+      - name: page
+        type: $integer
