@@ -3,6 +3,7 @@ package com.schibsted.recipe.presenter;
 import com.schibsted.recipe.DefaultApplication;
 import com.schibsted.recipe.activity.RecipeView;
 import com.schibsted.recipe.api.ApiResponse;
+import com.schibsted.recipe.bean.Recipe;
 import com.schibsted.recipe.bean.Recipes;
 import com.schibsted.recipe.executor.GetRecipe;
 
@@ -29,7 +30,13 @@ public class RecipePresenter extends Presenter {
 
         @Override
         public void call(ApiResponse<Recipes> response) {
-            mRecipeView.getRecipes(response.getBean());
+            if (response.getBean() != null &&
+                    response.getBean().getRecipes() != null &&
+                    response.getBean().getRecipes().length > 0) {
+                mRecipeView.getRecipes(response.getBean().getRecipes());
+            } else {
+                mRecipeView.noRecipesFound();
+            }
         }
     };
 
