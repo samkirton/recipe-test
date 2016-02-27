@@ -12,31 +12,31 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class RecipeActivity extends BaseActivity {
+public class RecipeActivity extends BaseActivity implements RecipeView {
+    private RecipePresenter mRecipePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        new RecipePresenter().getRecipe()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(createSubscriber(mGetRecipeAction, mGetRecipeError));
+        mRecipePresenter = new RecipePresenter(this);
     }
 
-    private Action1 mGetRecipeAction = new Action1<ApiResponse<Recipes>>() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mRecipePresenter.loadRecipes();
+    }
 
-        @Override
-        public void call(ApiResponse<Recipes> response) {
-            System.out.print("");
-        }
-    };
+    @Override
+    public void getRecipes(Recipes recipes) {
+        System.out.print("");
+        recipes.getCount();
+    }
 
-    private Action1 mGetRecipeError = new Action1<Throwable>() {
-        @Override
-        public void call(Throwable e) {
-
-        }
-    };
+    @Override
+    public void errorFetchingRecipes() {
+        System.out.print("");
+    }
 }
