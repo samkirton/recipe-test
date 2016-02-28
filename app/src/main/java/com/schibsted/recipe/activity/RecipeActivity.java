@@ -1,6 +1,8 @@
 package com.schibsted.recipe.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import com.schibsted.recipe.DefaultApplication;
 import com.schibsted.recipe.R;
 import com.schibsted.recipe.adapter.RecipeAdapter;
+import com.schibsted.recipe.adapter.holder.RecipeHolder;
 import com.schibsted.recipe.bean.Recipe;
 import com.schibsted.recipe.presenter.RecipePresenter;
 
@@ -36,7 +39,7 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
         ButterKnife.bind(this);
         setTitle(getString(R.string.activity_recipe_title));
 
-        mRecipeAdapter = new RecipeAdapter();
+        mRecipeAdapter = new RecipeAdapter(mOnRecipeSelected);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecipeAdapter);
 
@@ -46,7 +49,7 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
     @Override
     protected void onStart() {
         super.onStart();
-        mRecipePresenter.loadInitialRecipes();
+        mRecipePresenter.loadLastSearchedRecipes();
     }
 
     @Override
@@ -94,6 +97,18 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
         mErrorMessageTextView.setText(R.string.activity_recipe_error);
     }
 
+    private RecipeHolder.OnRecipeSelected mOnRecipeSelected = new RecipeHolder.OnRecipeSelected() {
+
+        @Override
+        public void onRecipeSelected(Recipe recipe) {
+            Intent intent = new Intent(RecipeActivity.this, RecipeDetailsActivity.class);
+            intent.putExtra(RecipeDetailsActivity.RECIPE_ID,recipe.getRecipe_id());
+            intent.putExtra(RecipeDetailsActivity.RECIPE_TITLE, recipe.getTitle());
+            startActivity(intent);
+            overridePendingTransitionIn();
+        }
+    };
+
     private SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
 
         @Override
@@ -121,4 +136,9 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
             return true;
         }
     };
+
+    @Override
+    protected boolean shouldAnimateOut() {
+        return false;
+    }
 }

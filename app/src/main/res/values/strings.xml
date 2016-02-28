@@ -2,9 +2,15 @@
 <resources>
 
     <string name="app_name">Schibsted</string>
+    <string name="api_key">b549c4c96152e677eb90de4604ca61a2</string>
+
     <string name="activity_recipe_title">Recipes</string>
-    <string name="activity_recipe_no_results">Could not find any results matching: %1$s</string>
-    <string name="activity_recipe_error">An error occurred fetching recipes</string>
+    <string name="activity_recipe_no_results">Could not find any results matching: %1$s.</string>
+    <string name="activity_recipe_error">An error occurred whilst fetching recipes.</string>
     <string name="activity_recipe_search_title">Search</string>
+
+    <string name="activity_recipe_details_title_empty">-</string>
+    <string name="activity_recipe_details_no_result">Recipe could not be found.</string>
+    <string name="activity_recipe_details_error">An error occurred whilst fetching the recipe.</string>
 
 </resources>

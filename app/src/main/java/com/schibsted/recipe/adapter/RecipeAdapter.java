@@ -2,14 +2,22 @@ package com.schibsted.recipe.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.schibsted.recipe.R;
 import com.schibsted.recipe.adapter.holder.RecipeHolder;
 import com.schibsted.recipe.bean.Recipe;
 
+import butterknife.OnClick;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Recipe[] mRecipes;
+    private RecipeHolder.OnRecipeSelected mOnRecipeSelected;
+
+    public RecipeAdapter(RecipeHolder.OnRecipeSelected onRecipeSelected) {
+        mOnRecipeSelected = onRecipeSelected;
+    }
 
     public void setRecipes(Recipe[] recipes) {
         mRecipes = recipes;
@@ -19,7 +27,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new RecipeHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_recipe, viewGroup, false)
+                .inflate(R.layout.adapter_recipe, viewGroup, false), mOnRecipeSelected
         );
     }
 

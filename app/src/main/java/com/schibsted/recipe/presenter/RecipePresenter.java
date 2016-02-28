@@ -1,5 +1,6 @@
 package com.schibsted.recipe.presenter;
 
+import com.schibsted.recipe.DefaultApplication;
 import com.schibsted.recipe.activity.RecipeView;
 import com.schibsted.recipe.api.ApiResponse;
 import com.schibsted.recipe.api.sync.ApiManager;
@@ -23,6 +24,10 @@ public class RecipePresenter extends Presenter<RecipeView> {
         loadRecipes("",0);
     }
 
+    public void loadLastSearchedRecipes() {
+        loadRecipes(mLastSearchTerms,0);
+    }
+
     public void loadRecipes(String terms, int page) {
         getView().loadingRecipes();
 
@@ -30,14 +35,14 @@ public class RecipePresenter extends Presenter<RecipeView> {
         observe(new SearchExecutor(terms, page))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(createSubscriber(mGetRecipeAction, mGetRecipeError));
+                .subscribe(createSubscriber(mSearchAction, mSearchError));
     }
 
     public String getLastSearchTerms() {
         return mLastSearchTerms;
     }
 
-    private Action1 mGetRecipeAction = new Action1<ApiResponse<Recipes>>() {
+    private Action1 mSearchAction = new Action1<ApiResponse<Recipes>>() {
 
         @Override
         public void call(ApiResponse<Recipes> response) {
@@ -51,7 +56,7 @@ public class RecipePresenter extends Presenter<RecipeView> {
         }
     };
 
-    private Action1 mGetRecipeError = new Action1<Throwable>() {
+    private Action1 mSearchError = new Action1<Throwable>() {
         @Override
         public void call(Throwable e) {
             getView().errorFetchingRecipes();
@@ -71,7 +76,7 @@ public class RecipePresenter extends Presenter<RecipeView> {
         public ApiResponse go() {
             final String SORT_RATING = "r";
             return mApiManager.search(
-                    "b549c4c96152e677eb90de4604ca61a2",
+                    DefaultApplication.getInstance().getApiKey(),
                     mTerms,
                     SORT_RATING,
                     mPage

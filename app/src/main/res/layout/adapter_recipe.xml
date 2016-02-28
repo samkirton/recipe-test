@@ -12,9 +12,7 @@
             android:id="@+id/adapter_recipe_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_regular"
-            android:textStyle="bold"
-            android:textColor="@color/primary_foreground"/>
+            android:textStyle="bold"/>
 
     </FrameLayout>
 

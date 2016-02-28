@@ -11,6 +11,7 @@ public class DefaultApplication extends Application {
     private static DefaultApplication sInstance;
 
     private ApiManager mApiManager;
+    private String mApiKey;
 
     private static final String ENDPOINT = "http://food2fork.com";
 
@@ -20,6 +21,10 @@ public class DefaultApplication extends Application {
 
     public ApiManager getApiManager() {
         return mApiManager;
+    }
+
+    public String getApiKey() {
+        return mApiKey;
     }
 
     @Override
@@ -32,5 +37,7 @@ public class DefaultApplication extends Application {
                 .setEndpoint(ENDPOINT)
                 .build()
         );
+
+        mApiKey = getString(R.string.api_key);
     }
 }

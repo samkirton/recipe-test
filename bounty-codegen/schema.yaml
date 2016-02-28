@@ -32,6 +32,23 @@ endpoint:
             body:
                 type: ~Recipes
 
+    - path: /api/get
+      id: GetRecipe
+      method:
+      - name: GET
+        id: getRecipe
+        request:
+            query:
+            - name: key
+              type: $string
+            - name: rId
+              type: $string
+
+        response:
+            code: 200
+            body:
+                type: ~RecipeWrapper
+
 data:
     bean:
     - name: Recipes
@@ -42,10 +59,21 @@ data:
       - name: recipes
         type: ~Recipe[]
 
+    - name: RecipeWrapper
+      var:
+      - name: recipe
+        type: ~Recipe
+
     - name: Recipe
       var:
+      - name: recipe_id
+        type: $string
+
       - name: publisher
         type: $string
+
+      - name: ingredients
+        type: $string[]
 
       - name: image_url
         type: $string
