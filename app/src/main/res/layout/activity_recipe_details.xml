@@ -56,7 +56,8 @@
         android:id="@+id/activity_recipe_details_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/spacing_medium"
         android:visibility="gone"/>
 
     <TextView
