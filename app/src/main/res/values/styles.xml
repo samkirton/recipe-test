@@ -4,11 +4,19 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textViewStyle">@style/App_TextView</item>
         <item name="android:windowBackground">@color/window_background</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
     </style>
 
     <style name="App_TextView" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/primary_foreground</item>
         <item name="android:textSize">@dimen/textsize_regular</item>
+    </style>
+
+    <style name="DefaultTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primary_foreground_inverted</item>
+        <item name="android:textSize">@dimen/textsize_headline</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

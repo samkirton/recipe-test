@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.RecipeDetailsActivity" />
+        <activity android:name=".activity.RecipeDetailsActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
 
     </application>
 
