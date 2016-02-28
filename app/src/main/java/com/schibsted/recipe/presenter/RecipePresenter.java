@@ -14,24 +14,36 @@ public class RecipePresenter extends Presenter<RecipeView> {
 
     private ApiManager mApiManager;
     private String mLastSearchTerms = "";
+    private int mCurrentPage = 1;
 
     public RecipePresenter(ApiManager apiManager, RecipeView recipeView) {
         super(recipeView);
         mApiManager = apiManager;
     }
 
-    public void loadInitialRecipes() {
-        loadRecipes("",0);
-    }
-
-    public void loadLastSearchedRecipes() {
-        loadRecipes(mLastSearchTerms,0);
-    }
-
-    public void loadRecipes(String terms, int page) {
+    public void searchRecipes(String terms, int page) {
         getView().loadingRecipes();
+        search(terms,page);
+    }
 
+    public void searchInitialRecipes() {
+        getView().loadingRecipes();
+        search("", 1);
+    }
+
+    public void getLastSearchedRecipes() {
+        getView().loadingRecipes();
+        search(mLastSearchTerms, 1);
+    }
+
+    public void getMoreRecipes() {
+        mCurrentPage++;
+        search(mLastSearchTerms, mCurrentPage);
+    }
+
+    private void search(String terms, int page) {
         mLastSearchTerms = terms;
+        mCurrentPage = page;
         observe(new SearchExecutor(terms, page))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +61,11 @@ public class RecipePresenter extends Presenter<RecipeView> {
             if (response.getBean() != null &&
                     response.getBean().getRecipes() != null &&
                     response.getBean().getRecipes().length > 0) {
-                getView().displayRecipes(response.getBean().getRecipes());
+                if (mCurrentPage == 1) {
+                    getView().displayRecipes(response.getBean().getRecipes());
+                } else {
+                    getView().addMoreRecipes(response.getBean().getRecipes());
+                }
             } else {
                 getView().noRecipesFound();
             }

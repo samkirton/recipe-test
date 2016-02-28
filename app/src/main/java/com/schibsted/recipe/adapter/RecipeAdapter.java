@@ -8,8 +8,12 @@ import com.schibsted.recipe.R;
 import com.schibsted.recipe.adapter.holder.RecipeHolder;
 import com.schibsted.recipe.bean.Recipe;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Recipe[] mRecipes;
+    private List<Recipe> mRecipes = new ArrayList<>();
     private RecipeHolder.OnRecipeSelected mOnRecipeSelected;
 
     public RecipeAdapter(RecipeHolder.OnRecipeSelected onRecipeSelected) {
@@ -17,7 +21,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setRecipes(Recipe[] recipes) {
-        mRecipes = recipes != null ? recipes : new Recipe[]{};
+        Recipe[] recipeArray = recipes != null ? recipes : new Recipe[]{};
+        mRecipes = new ArrayList<>();
+        mRecipes.addAll(Arrays.asList(recipeArray));
+
+        notifyDataSetChanged();
+    }
+
+    public void addRecipes(Recipe[] recipes) {
+        Recipe[] recipeArray = recipes != null ? recipes : new Recipe[]{};
+        mRecipes.addAll(Arrays.asList(recipeArray));
+
         notifyDataSetChanged();
     }
 
@@ -30,11 +44,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RecipeHolder) holder).populate(mRecipes[position]);
+        if (holder instanceof RecipeHolder) {
+            ((RecipeHolder) holder).populate(mRecipes.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mRecipes != null ? mRecipes.length : 0;
+        return mRecipes != null ? mRecipes.size() : 0;
     }
 }

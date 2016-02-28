@@ -19,6 +19,7 @@ import com.schibsted.recipe.adapter.RecipeAdapter;
 import com.schibsted.recipe.adapter.holder.RecipeHolder;
 import com.schibsted.recipe.bean.Recipe;
 import com.schibsted.recipe.presenter.RecipePresenter;
+import com.schibsted.recipe.view.EndlessRecyclerOnScrollListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,18 +38,27 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
         setTitle(getString(R.string.activity_recipe_title));
-
-        mRecipeAdapter = new RecipeAdapter(mOnRecipeSelected);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mRecipeAdapter);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher);
 
         mRecipePresenter = new RecipePresenter(DefaultApplication.getInstance().getApiManager(), this);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mRecipeAdapter = new RecipeAdapter(mOnRecipeSelected);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                mRecipePresenter.getMoreRecipes();
+            }
+        });
+
+        mRecyclerView.setAdapter(mRecipeAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mRecipePresenter.loadLastSearchedRecipes();
+        mRecipePresenter.getLastSearchedRecipes();
     }
 
     @Override
@@ -78,6 +88,14 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
         mRecyclerView.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setVisibility(View.GONE);
         mRecipeAdapter.setRecipes(recipes);
+    }
+
+    @Override
+    public void addMoreRecipes(Recipe[] recipes) {
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mErrorMessageTextView.setVisibility(View.GONE);
+        mRecipeAdapter.addRecipes(recipes);
     }
 
     @Override
@@ -112,7 +130,7 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
 
         @Override
         public boolean onQueryTextSubmit(String query) {
-            mRecipePresenter.loadRecipes(query, 0);
+            mRecipePresenter.searchRecipes(query, 1);
             return true;
         }
 
@@ -131,7 +149,7 @@ public class RecipeActivity extends BaseActivity implements RecipeView {
 
         @Override
         public boolean onMenuItemActionCollapse(MenuItem item) {
-            mRecipePresenter.loadInitialRecipes();
+            mRecipePresenter.searchInitialRecipes();
             return true;
         }
     };
