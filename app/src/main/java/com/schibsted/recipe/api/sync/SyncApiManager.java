@@ -2,10 +2,8 @@ package com.schibsted.recipe.api.sync;
 
 import com.schibsted.recipe.api.ApiResponse;
 import com.schibsted.recipe.api.ResponseParser;
-
-import  com.schibsted.recipe.bean.Empty;
-import com.schibsted.recipe.bean.Recipes;
 import com.schibsted.recipe.bean.RecipeWrapper;
+import com.schibsted.recipe.bean.Recipes;
 
 import retrofit.RestAdapter;
 import retrofit.client.Response;

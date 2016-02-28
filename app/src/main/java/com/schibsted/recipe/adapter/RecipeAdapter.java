@@ -2,14 +2,11 @@ package com.schibsted.recipe.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.schibsted.recipe.R;
 import com.schibsted.recipe.adapter.holder.RecipeHolder;
 import com.schibsted.recipe.bean.Recipe;
-
-import butterknife.OnClick;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Recipe[] mRecipes;
