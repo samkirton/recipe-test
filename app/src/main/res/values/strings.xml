@@ -12,5 +12,6 @@
     <string name="activity_recipe_details_title_empty">-</string>
     <string name="activity_recipe_details_no_result">Recipe could not be found.</string>
     <string name="activity_recipe_details_error">An error occurred whilst fetching the recipe.</string>
+    <string name="activity_recipe_details_ingredients">Ingredients</string>
 
 </resources>

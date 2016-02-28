@@ -20,20 +20,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setRecipes(Recipe[] recipes) {
-        mRecipes = recipes;
+        mRecipes = recipes != null ? recipes : new Recipe[]{};
         notifyDataSetChanged();
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new RecipeHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_recipe, viewGroup, false), mOnRecipeSelected
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+        return new RecipeHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_recipe, parent, false), mOnRecipeSelected
         );
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        ((RecipeHolder) viewHolder).populate(mRecipes[i]);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ((RecipeHolder) holder).populate(mRecipes[position]);
     }
 
     @Override

@@ -12,4 +12,6 @@
     <color name="row_selector_background_default">#FFFFFF</color>
     <color name="row_selector_background_selected">#AAAAAA</color>
 
+    <color name="adapter_row_border_bottom">#fbfbfb</color>
+
 </resources>

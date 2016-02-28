@@ -17,9 +17,9 @@ public class RecipeHolder extends RecyclerView.ViewHolder {
     private Recipe mRecipe;
     private OnRecipeSelected mOnRecipeSelected;
 
-    public RecipeHolder(View view, OnRecipeSelected onRecipeSelected) {
-        super(view);
-        ButterKnife.bind(this, view);
+    public RecipeHolder(View itemView, OnRecipeSelected onRecipeSelected) {
+        super(itemView);
+        ButterKnife.bind(this, itemView);
         mOnRecipeSelected = onRecipeSelected;
     }
 

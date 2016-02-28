@@ -4,7 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,10 @@ import android.widget.TextView;
 
 import com.schibsted.recipe.DefaultApplication;
 import com.schibsted.recipe.R;
+import com.schibsted.recipe.adapter.IngredientAdapter;
 import com.schibsted.recipe.bean.Recipe;
 import com.schibsted.recipe.presenter.RecipeDetailPresenter;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Callback;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,11 +26,12 @@ import butterknife.ButterKnife;
 public class RecipeDetailsActivity extends BaseActivity implements RecipeDetailsView {
     @Bind(R.id.activity_recipe_details_progressbar) ProgressBar mProgressBar;
     @Bind(R.id.activity_recipe_details_error) TextView mErrorMessageTextView;
-    @Bind(R.id.activity_recipe_details_content) ViewGroup mContentViewGroup;
     @Bind(R.id.activity_recipe_details_toolbar) Toolbar mToolbar;
     @Bind(R.id.activity_recipe_details_collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbarLayout;
     @Bind(R.id.activity_recipe_details_image) ImageView mRecipeImageView;
+    @Bind(R.id.activity_recipe_details_ingredients_recyclerView) RecyclerView mIngredientsRecyclerView;
 
+    private IngredientAdapter mIngredientAdapter;
     private RecipeDetailPresenter mRecipeDetailPresenter;
 
     public static final String RECIPE_ID = "RECIPE_ID";
@@ -46,6 +48,13 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mIngredientAdapter = new IngredientAdapter();
+        mIngredientsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mIngredientsRecyclerView.setAdapter(mIngredientAdapter);
+
+        mCollapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.primary_dark));
+        mCollapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.primary));
 
         mRecipeDetailPresenter = new RecipeDetailPresenter(DefaultApplication.getInstance().getApiManager(),this);
     }
@@ -68,34 +77,27 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
                 getIntent().getStringExtra(RECIPE_TITLE) : getString(R.string.activity_recipe_details_title_empty);
     }
 
-    private void applyPalette(Palette palette) {
-        int primaryDark = getResources().getColor(R.color.primary_dark);
-        int primary = getResources().getColor(R.color.primary);
-        mCollapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
-        mCollapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
-        supportStartPostponedEnterTransition();
-    }
-
     @Override
     public void loadingRecipe() {
         mProgressBar.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setVisibility(View.GONE);
-        mContentViewGroup.setVisibility(View.GONE);
+        mIngredientsRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void displayRecipe(Recipe recipe) {
         mProgressBar.setVisibility(View.GONE);
         mErrorMessageTextView.setVisibility(View.GONE);
-        mContentViewGroup.setVisibility(View.VISIBLE);
+        mIngredientsRecyclerView.setVisibility(View.VISIBLE);
 
-        Picasso.with(this).load(recipe.getImage_url()).into(mRecipeImageView, mPicassoCallback);
+        mIngredientAdapter.setIngredients(recipe.getIngredients());
+        Picasso.with(this).load(recipe.getImage_url()).into(mRecipeImageView);
     }
 
     @Override
     public void noRecipeFound() {
         mProgressBar.setVisibility(View.GONE);
-        mContentViewGroup.setVisibility(View.GONE);
+        mIngredientsRecyclerView.setVisibility(View.GONE);
         mErrorMessageTextView.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setText(getString(R.string.activity_recipe_details_no_result));
     }
@@ -103,7 +105,7 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     @Override
     public void errorFetchingRecipe() {
         mProgressBar.setVisibility(View.GONE);
-        mContentViewGroup.setVisibility(View.GONE);
+        mIngredientsRecyclerView.setVisibility(View.GONE);
         mErrorMessageTextView.setVisibility(View.VISIBLE);
         mErrorMessageTextView.setText(getString(R.string.activity_recipe_details_error));
     }
@@ -112,20 +114,4 @@ public class RecipeDetailsActivity extends BaseActivity implements RecipeDetails
     protected boolean shouldAnimateOut() {
         return true;
     }
-
-    private Callback mPicassoCallback = new Callback() {
-
-        @Override
-        public void onSuccess() {
-            Bitmap bitmap = ((BitmapDrawable) mRecipeImageView.getDrawable()).getBitmap();
-            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                public void onGenerated(Palette palette) {
-                    applyPalette(palette);
-                }
-            });
-        }
-
-        @Override
-        public void onError() { }
-    };
 }
