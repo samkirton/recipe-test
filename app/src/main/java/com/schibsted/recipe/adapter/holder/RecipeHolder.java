@@ -1,6 +1,7 @@
 package com.schibsted.recipe.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class RecipeHolder extends RecyclerView.ViewHolder {
 
     public void populate(Recipe recipe) {
         mRecipe = recipe;
-        mTitleTextView.setText(recipe.getTitle());
+        mTitleTextView.setText(Html.fromHtml(recipe.getTitle()));
     }
 
     @OnClick(R.id.adapter_recipe_title)

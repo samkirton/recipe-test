@@ -6,21 +6,50 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/adapter_ingredients_footer_view_instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/spacing_medium"
         android:textColor="@color/primary_foreground"
         android:textSize="@dimen/textsize_title"
-        android:text="View Instructions"/>
+        android:text="@string/activity_recipe_details_view_instructions"/>
 
     <TextView
+        android:id="@+id/adapter_ingredients_footer_view_originals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/spacing_medium"
         android:textColor="@color/primary_foreground"
         android:textSize="@dimen/textsize_title"
-        android:text="View Original"/>
+        android:text="@string/activity_recipe_details_view_original"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_marginLeft="@dimen/spacing_medium"
+        android:layout_marginRight="@dimen/spacing_medium"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/adapter_ingredients_footer_publisher_name"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_foreground_caption"
+            android:textSize="@dimen/textsize_caption"/>
+
+        <TextView
+            android:id="@+id/adapter_ingredients_footer_social_rank"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_foreground_caption"
+            android:textSize="@dimen/textsize_caption"
+            android:gravity="right"/>
+
+    </LinearLayout>
 
 </LinearLayout>

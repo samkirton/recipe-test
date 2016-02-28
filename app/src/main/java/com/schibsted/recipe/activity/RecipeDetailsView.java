@@ -7,4 +7,6 @@ public interface RecipeDetailsView {
     void displayRecipe(Recipe recipe);
     void noRecipeFound();
     void errorFetchingRecipe();
+    void navigateToViewInstructions(String url);
+    void navigateToViewOriginal(String url);
 }

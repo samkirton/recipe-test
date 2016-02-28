@@ -4,6 +4,7 @@ import com.schibsted.recipe.DefaultApplication;
 import com.schibsted.recipe.activity.RecipeDetailsView;
 import com.schibsted.recipe.api.ApiResponse;
 import com.schibsted.recipe.api.sync.ApiManager;
+import com.schibsted.recipe.bean.Recipe;
 import com.schibsted.recipe.bean.RecipeWrapper;
 import com.schibsted.recipe.bean.Recipes;
 
@@ -13,10 +14,19 @@ import rx.schedulers.Schedulers;
 
 public class RecipeDetailPresenter extends Presenter<RecipeDetailsView> {
     private ApiManager mApiManager;
+    private Recipe mRecipe;
 
     public RecipeDetailPresenter(ApiManager apiManager, RecipeDetailsView recipeDetailsView) {
         super(recipeDetailsView);
         mApiManager = apiManager;
+    }
+
+    public void viewInstructions() {
+        getView().navigateToViewInstructions(mRecipe.getF2f_url());
+    }
+
+    public void viewOriginal() {
+        getView().navigateToViewOriginal(mRecipe.getSource_url());
     }
 
     public void loadRecipe(String recipeId) {
@@ -34,6 +44,7 @@ public class RecipeDetailPresenter extends Presenter<RecipeDetailsView> {
         public void call(ApiResponse<RecipeWrapper> response) {
             if (response.getBean() != null &&
                     response.getBean().getRecipe() != null) {
+                mRecipe = response.getBean().getRecipe();
                 getView().displayRecipe(response.getBean().getRecipe());
             } else {
                 getView().noRecipeFound();

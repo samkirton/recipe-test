@@ -14,4 +14,8 @@
     <string name="activity_recipe_details_error">An error occurred whilst fetching the recipe.</string>
     <string name="activity_recipe_details_ingredients">Ingredients</string>
 
+    <string name="activity_recipe_details_social_rank">Social rank: %1$s</string>
+    <string name="activity_recipe_details_view_instructions">View Instructions</string>
+    <string name="activity_recipe_details_view_original">View Original</string>
+
 </resources>

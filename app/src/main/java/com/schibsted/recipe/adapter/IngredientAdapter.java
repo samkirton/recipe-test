@@ -5,17 +5,26 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.schibsted.recipe.R;
+import com.schibsted.recipe.adapter.holder.FooterHolder;
 import com.schibsted.recipe.adapter.holder.IngredientHolder;
 import com.schibsted.recipe.adapter.holder.StaticHolder;
+import com.schibsted.recipe.bean.Recipe;
 
 public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private Recipe mRecipe;
     private String[] mIngredients;
+    private FooterHolder.OnFooterNavigationSelected mOnFooterNavigationSelected;
 
     private static final int HEADER = 0x1;
     private static final int FOOTER = 0x2;
 
-    public void setIngredients(String[] ingredients) {
-        mIngredients = ingredients != null ? ingredients : new String[]{};
+    public IngredientAdapter(FooterHolder.OnFooterNavigationSelected onFooterNavigationSelected) {
+        mOnFooterNavigationSelected = onFooterNavigationSelected;
+    }
+
+    public void setIngredients(Recipe recipe) {
+        mRecipe = recipe;
+        mIngredients = mRecipe.getIngredients() != null ? mRecipe.getIngredients() : new String[]{};
         notifyDataSetChanged();
     }
 
@@ -30,8 +39,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return new StaticHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapter_ingredients_header, parent, false));
             case FOOTER:
-                return new StaticHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.adapter_ingredients_footer, parent, false));
+                return new FooterHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.adapter_ingredients_footer, parent, false), mOnFooterNavigationSelected);
             default:
                 return new IngredientHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapter_ingredients, parent, false));
@@ -40,8 +49,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof IngredientHolder)
-            ((IngredientHolder) holder).populate(mIngredients[position-1]);
+        if (holder instanceof IngredientHolder) {
+            ((IngredientHolder) holder).populate(mIngredients[position - 1]);
+        } else if (holder instanceof FooterHolder) {
+            ((FooterHolder)holder).populate(mRecipe);
+        }
     }
 
     @Override

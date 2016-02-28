@@ -1,6 +1,7 @@
 package com.schibsted.recipe.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +19,6 @@ public class IngredientHolder extends RecyclerView.ViewHolder {
     }
 
     public void populate(String value) {
-        mTitleTextView.setText(value);
+        mTitleTextView.setText(Html.fromHtml(value));
     }
 }

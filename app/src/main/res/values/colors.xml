@@ -3,6 +3,7 @@
 
     <color name="primary_foreground">#222222</color>
     <color name="primary_foreground_inverted">#FFFFFF</color>
+    <color name="primary_foreground_caption">#DDDDDD</color>
     <color name="primary_background">#FFFFFF</color>
     <color name="window_background">#000000</color>
 
