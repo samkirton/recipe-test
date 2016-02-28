@@ -6,7 +6,6 @@ import com.schibsted.recipe.api.ApiResponse;
 import com.schibsted.recipe.api.sync.ApiManager;
 import com.schibsted.recipe.bean.Recipe;
 import com.schibsted.recipe.bean.RecipeWrapper;
-import com.schibsted.recipe.bean.Recipes;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

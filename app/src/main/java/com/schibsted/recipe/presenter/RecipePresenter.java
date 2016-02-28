@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
 public class RecipePresenter extends Presenter<RecipeView> {
 
     private ApiManager mApiManager;
-    private String mLastSearchTerms;
+    private String mLastSearchTerms = "";
 
     public RecipePresenter(ApiManager apiManager, RecipeView recipeView) {
         super(recipeView);

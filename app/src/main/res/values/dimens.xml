@@ -14,4 +14,6 @@
 
     <dimen name="activity_recipe_details_header_top">180dp</dimen>
 
+    <dimen name="adapter_recipe_image">50dp</dimen>
+
 </resources>
