@@ -2,6 +2,8 @@ package com.schibsted.recipe.bean;
 
 public class Recipe implements Bean {
     private String publisher;
+    private String image_url;
+    private double social_rank;
     private String f2f_url;
     private String publisher_url;
     private String title;
@@ -14,6 +16,22 @@ public class Recipe implements Bean {
 
     public void setPublisher(String newVal) {
         publisher = newVal;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String newVal) {
+        image_url = newVal;
+    }
+
+    public double getSocial_rank() {
+        return social_rank;
+    }
+
+    public void setSocial_rank(double newVal) {
+        social_rank = newVal;
     }
 
     public String getF2f_url() {

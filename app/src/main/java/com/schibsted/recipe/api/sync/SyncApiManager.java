@@ -9,7 +9,7 @@ import com.schibsted.recipe.bean.Recipes;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 
-public class SyncApiManager {
+public class SyncApiManager implements ApiManager {
     private SyncRetrofitApi mSyncRetrofitApi;
     private ResponseParser mResponseParser;
 

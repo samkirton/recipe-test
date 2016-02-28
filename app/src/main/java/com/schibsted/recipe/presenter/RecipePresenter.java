@@ -1,29 +1,40 @@
 package com.schibsted.recipe.presenter;
 
-import com.schibsted.recipe.DefaultApplication;
 import com.schibsted.recipe.activity.RecipeView;
 import com.schibsted.recipe.api.ApiResponse;
-import com.schibsted.recipe.bean.Recipe;
+import com.schibsted.recipe.api.sync.ApiManager;
 import com.schibsted.recipe.bean.Recipes;
-import com.schibsted.recipe.executor.GetRecipe;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class RecipePresenter extends Presenter {
-    private RecipeView mRecipeView;
+public class RecipePresenter extends Presenter<RecipeView> {
 
-    public RecipePresenter(RecipeView recipeView) {
-        mRecipeView = recipeView;
+    private ApiManager mApiManager;
+    private String mLastSearchTerms;
+
+    public RecipePresenter(ApiManager apiManager, RecipeView recipeView) {
+        super(recipeView);
+        mApiManager = apiManager;
     }
 
-    public void loadRecipes() {
-        observe(new GetRecipe())
+    public void loadInitialRecipes() {
+        loadRecipes("",0);
+    }
+
+    public void loadRecipes(String terms, int page) {
+        getView().loadingRecipes();
+
+        mLastSearchTerms = terms;
+        observe(new SearchExecutor(terms, page))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(createSubscriber(mGetRecipeAction, mGetRecipeError));
+    }
+
+    public String getLastSearchTerms() {
+        return mLastSearchTerms;
     }
 
     private Action1 mGetRecipeAction = new Action1<ApiResponse<Recipes>>() {
@@ -33,9 +44,9 @@ public class RecipePresenter extends Presenter {
             if (response.getBean() != null &&
                     response.getBean().getRecipes() != null &&
                     response.getBean().getRecipes().length > 0) {
-                mRecipeView.getRecipes(response.getBean().getRecipes());
+                getView().displayRecipes(response.getBean().getRecipes());
             } else {
-                mRecipeView.noRecipesFound();
+                getView().noRecipesFound();
             }
         }
     };
@@ -43,7 +54,28 @@ public class RecipePresenter extends Presenter {
     private Action1 mGetRecipeError = new Action1<Throwable>() {
         @Override
         public void call(Throwable e) {
-            mRecipeView.errorFetchingRecipes();
+            getView().errorFetchingRecipes();
+        }
+    };
+
+    private class SearchExecutor implements Executor  {
+        private String mTerms;
+        private int mPage;
+
+        public SearchExecutor(String terms, int page) {
+            mTerms = terms;
+            mPage = page;
+        }
+
+        @Override
+        public ApiResponse go() {
+            final String SORT_RATING = "r";
+            return mApiManager.search(
+                    "b549c4c96152e677eb90de4604ca61a2",
+                    mTerms,
+                    SORT_RATING,
+                    mPage
+            );
         }
     };
 }

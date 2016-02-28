@@ -1,13 +1,21 @@
 package com.schibsted.recipe.presenter;
 
 import com.schibsted.recipe.api.ApiResponse;
-import com.schibsted.recipe.executor.Executor;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
 
-public abstract class Presenter {
+public abstract class Presenter<View> {
+    private View mView;
+
+    protected View getView() {
+        return mView;
+    }
+
+    public Presenter(View view) {
+        mView = view;
+    }
 
     protected Subscriber createSubscriber(final Action1<? super ApiResponse> action1, final Action1<? super Throwable> error) {
 
@@ -37,5 +45,9 @@ public abstract class Presenter {
                 subscriber.onNext(executor.go());
             }
         });
+    }
+
+    protected interface Executor {
+        ApiResponse go();
     }
 }

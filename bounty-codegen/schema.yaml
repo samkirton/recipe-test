@@ -47,6 +47,12 @@ data:
       - name: publisher
         type: $string
 
+      - name: image_url
+        type: $string
+
+      - name: social_rank
+        type: $double
+
       - name: f2f_url
         type: $string
 

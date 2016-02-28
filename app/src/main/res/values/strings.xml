@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Schibsted</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="activity_recipe_title">Recipes</string>
+    <string name="activity_recipe_no_results">Could not find any results matching: %1$s</string>
+    <string name="activity_recipe_error">An error occurred fetching recipes</string>
+    <string name="activity_recipe_search_title">Search</string>
 
 </resources>

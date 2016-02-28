@@ -2,6 +2,7 @@ package com.schibsted.recipe;
 
 import android.app.Application;
 
+import com.schibsted.recipe.api.sync.ApiManager;
 import com.schibsted.recipe.api.sync.SyncApiManager;
 
 import retrofit.RestAdapter;
@@ -9,7 +10,7 @@ import retrofit.RestAdapter;
 public class DefaultApplication extends Application {
     private static DefaultApplication sInstance;
 
-    private SyncApiManager mSyncApiManager;
+    private ApiManager mApiManager;
 
     private static final String ENDPOINT = "http://food2fork.com";
 
@@ -17,8 +18,8 @@ public class DefaultApplication extends Application {
         return sInstance;
     }
 
-    public SyncApiManager getSyncApiManager() {
-        return mSyncApiManager;
+    public ApiManager getApiManager() {
+        return mApiManager;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class DefaultApplication extends Application {
         super.onCreate();
         sInstance = this;
 
-        mSyncApiManager = new SyncApiManager(new RestAdapter.Builder()
+        mApiManager = new SyncApiManager(new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(ENDPOINT)
                 .build()

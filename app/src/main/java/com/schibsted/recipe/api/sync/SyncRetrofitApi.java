@@ -16,6 +16,6 @@ import retrofit.http.Query;
 public interface SyncRetrofitApi {
 
     @GET("/api/search")
-    Response search(@Query("key") String key, @Query("q") String q, @Query("sort") String sort, @Query("page") int page);
+    Response search(@Query("key") String key,@Query("q") String q,@Query("sort") String sort,@Query("page") int page);
 
 }
